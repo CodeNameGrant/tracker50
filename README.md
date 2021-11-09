@@ -34,7 +34,7 @@ Required
   -- contributors must be a counter with a link to view them (maybe modal)
   -- issue counts must link to views
 - issues
-  -- display all issues for all allowed projects when page loads
+  -- add filter selection options
 
 Optional
 

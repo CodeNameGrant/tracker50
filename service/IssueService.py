@@ -2,6 +2,10 @@
 from model import IssueModel
 
 
+def getIssues():
+    return IssueModel.findAll()
+
+
 def getIssuesByUserId(userId):
     return IssueModel.findIssuesByUserId(userId)
 

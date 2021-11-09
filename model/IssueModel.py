@@ -4,6 +4,16 @@ from model.utils import buildIssueKey, buildUserDisplayName
 
 db = SQL("sqlite:///tracker50.db")
 
+def findAll():
+    issues = db.execute(
+        "SELECT p.key, i.id, i.title, i.description, i.is_open, u.username, u.name AS displayName FROM issues i" +
+        " JOIN users u ON u.id = i.assignee_id" +
+        " JOIN projects p ON p.id = i.project_id"
+    )
+
+    buildUserDisplayName(issues)
+    buildIssueKey(issues)
+    return issues
 
 def findIssuesByProjectId(projectId):
     issues = db.execute(

@@ -8,8 +8,11 @@ from service import IssueService
 def find():
     print('issues-find')
 
+    issues = IssueService.getIssues()
+
     query = request.args.get("q")
-    issues = [] if query is None else IssueService.searchIssues(query)
+    if (query is not None):
+        issues = IssueService.searchIssues(query)
 
     return render_template("issues/find.html", issues=issues)
 
