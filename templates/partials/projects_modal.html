@@ -1,0 +1,62 @@
+<div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="projectModalLabel">Create Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form autocomplete="off">
+        <div class="modal-body">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" placeholder="Key" id="keyInput" name="key" maxlength="8" required>
+            <label for="keyInput">Key</label>
+          </div>
+        
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" placeholder="Name" id="nameInput" name="name" required>
+            <label for="nameInput">Name</label>
+          </div>
+
+          <div class="form-floating">
+            <textarea class="form-control" placeholder="Description" name="description" id="descriptionTextarea" style="height: 100px"></textarea>
+            <label for="descriptionTextarea">Description</label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelector("#projectModal form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const response = await fetch(`/projects`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          key: e.target[0].value,
+          name: e.target[1].value, 
+          description: e.target[2].value
+        }),
+      });
+
+      if (response.ok) {
+        location.assign("/")
+
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`)
+      }
+    });
+</script>

@@ -1,0 +1,48 @@
+{% extends "layout.html" %} 
+
+{% block title %}
+  Tracker50
+{% endblock %}
+
+{% block main %}
+  <div class="row">
+
+    <div class="col order-2 order-lg-0">{{ readme|safe }}</div>
+
+    <form class="col order-0 order-lg-2" action="/register" method="POST">
+      <h3>Register</h3>
+      <div class="row mb-3">
+        <div class="col">
+            <label for="inputUsername" class="form-label">Username</label>
+            <input autocomplete="off" type="text" name="username" class="form-control" id="inputUsername">
+        </div>
+
+        <div class="col">
+          <label for="inputName" class="form-label">Name</label>
+          <input type="text" autocomplete="off" name="name" class="form-control" id="inputName">
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col">
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="inputPassword">
+        </div>
+  
+        <div class="col">
+          <label for="inputPasswordConfirm" class="form-label">Confirm Password</label>
+          <input type="password" name="confirm_password" class="form-control" id="inputPasswordConfirm">
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+      </div>
+    </form>
+
+    <hr class="my-3 d-md-block d-lg-none order-1" />
+
+  </div>
+{% endblock %}

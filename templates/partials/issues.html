@@ -1,0 +1,22 @@
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">Assignee</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>    
+    {% for issue in issues %}
+      <tr>
+        <td scope="row">{{ issue.key }}</td>
+        <td scope="row">{{ issue.userDisplayName }}</td>
+        <td scope="row">{{ issue.title }}</td>
+        <td scope="row">{{ issue.description }}</td>
+        <td scope="row">{{ "Open" if issue.is_open|int == 1 else "Closed" }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

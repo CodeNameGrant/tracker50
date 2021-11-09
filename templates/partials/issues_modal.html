@@ -1,0 +1,140 @@
+<div class="modal fade" id="issueModal" tabindex="-1" aria-labelledby="issueModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="issueModalLabel">Create Issue</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form class="needs-validation" autocomplete="off" novalidate>
+        <div class="modal-body">
+          <div class="form-floating mb-3">
+            <select class="form-select" id="projectSelect" name="projectId" aria-label="Floating label select project" required/>
+              <option value="" selected>Select Project</option>
+            </select>
+            <label for="projectSelect">Project</label>
+            <div class="invalid-feedback">
+              Select a project
+            </div>
+          </div>
+
+          <div class="form-floating mb-3">
+            <select class="form-select" id="assigneeSelect" name="assigneeId" aria-label="Floating label select assignee" required disabled>
+              <option value="" selected>Select Assignee</option>
+            </select>
+            <label for="assigneeSelect">Assignee</label>
+            <div class="invalid-feedback">
+              Select an assignee
+            </div>
+          </div>
+        
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" placeholder="Title" id="titleInput" name="title" required>
+            <label for="titleInput">Title</label>
+            <div class="invalid-feedback">
+              Enter an issue title
+            </div>
+          </div>
+
+          <div class="form-floating">
+            <textarea class="form-control" placeholder="Description" name="description" id="descriptionTextarea" style="height: 100px"></textarea>
+            <label for="descriptionTextarea">Description</label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  let projectsLoaded = false;
+  document.getElementById("issueModal")
+    .addEventListener('show.bs.modal', () => {
+      if (projectsLoaded) return;
+
+      const projectSelect = document.querySelector("#projectSelect");
+
+      fetch("/projects?isOpen=true", { headers: { 'Content-Type': 'application/json', }})
+      .then(res => res.json())
+      .then(projects => {
+        
+        for (const project of projects) {
+          var option = document.createElement("option");
+          option.value = project.id
+          option.text = `${project.key} - ${project.name}`;
+          projectSelect.add(option);
+        }
+
+        projectsLoaded = true;
+      });
+    });
+
+  document.querySelector("#projectSelect")
+    .addEventListener("change", (e) => {
+      const projectId = parseInt(e.target.value);
+      const assigneeSelect = document.querySelector("#assigneeSelect");
+      
+      // Clear selected assignee
+      assigneeSelect.selectedIndex = "";
+      assigneeSelect.toggleAttribute("disabled", projectId === -1)
+
+      // Remove all but first assignee option
+      const optLength = assigneeSelect.options.length;
+      for (let i = assigneeSelect.options.length; i > 0; i--) {
+        assigneeSelect.remove(i);
+      }
+
+      if (projectId !== -1) {
+        // fetch available contributors for project
+        fetch(`/projects/${projectId}/contributors`, { headers: { 'Content-Type': 'application/json', }})
+          .then(res => res.json())
+          .then(contributors => {
+            for (const user of contributors) {
+              var option = document.createElement("option");
+              option.value = user.id;
+              option.text = user.userDisplayName;
+              assigneeSelect.add(option);
+            }
+          });
+      }
+    });
+
+  document.querySelector("#issueModal form")
+    .addEventListener("submit", async (e) => {
+      const form = e.target;
+      form.classList.add('was-validated')
+
+      if (!form.checkValidity()) {
+        e.preventDefault()
+        e.stopPropagation()
+        return;
+
+      }
+
+      const response = await fetch(`/issues`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          projectId: e.target[0].value,
+          assigneeId: e.target[1].value, 
+          title: e.target[2].value,
+          description: e.target[3].value
+        }),
+      });
+
+      if (response.ok) {
+        location.assign("/")
+
+      } else {
+        alert(`Error while saving issue`)
+      }
+    });
+</script>
