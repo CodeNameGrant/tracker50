@@ -4,6 +4,8 @@ from model.utils import buildUserDisplayName
 
 db = SQL("sqlite:///tracker50.db")
 
+def findAll():
+    return db.execute("SELECT * FROM projects p")
 
 def findProjectById(id):
     projects = db.execute(

@@ -8,7 +8,21 @@
   <h3>Find Issues</h3>
 
   <form action="/issues" class="d-flex justify-content-end align-items-center my-3 " >       
-    <input class="form-control w-25 me-2" placeholder="Search" name="q" value="{{ request.args.get('q') if request.args.get('q') is not none }}"/>
+    <div class="form-floating me-2">
+      <input class="form-control me-2" placeholder="Project" name="project" list="projects" value="{{ request.args.get('project') if request.args.get('project') is not none }}"/>
+      <datalist id="projects">
+        {% for p in projects %}
+          <option value="{{p['key']}}">{{ p["name"] }}</option>
+        {% endfor %}
+      </datalist>
+
+      <label for="keyInput">Project</label>
+    </div>
+    
+    <div class="form-floating me-2">
+      <input class="form-control" placeholder="Search" name="q" value="{{ request.args.get('q') if request.args.get('q') is not none }}"/>
+      <label for="keyInput">Search</label>
+    </div>
 
     <button type="submit" class="btn btn-light">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">

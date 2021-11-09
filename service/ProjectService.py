@@ -1,6 +1,15 @@
 from model import ProjectModel, IssueModel
 
 
+def getProjectKeyNames():
+    projects = ProjectModel.findAll()
+    for p in projects:
+        del p["id"]
+        del p["description"]
+        del p["is_open"]
+
+    return projects
+
 def getProjectsForDashboard(userId):
     projects = ProjectModel.findProjectsByUserId(userId)
 
