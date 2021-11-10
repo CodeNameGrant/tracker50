@@ -75,8 +75,10 @@ def update(id):
 
 @require_auth
 def destroy(id):
-    print("deleteProject", id, request.method)
-    return render_template("projects/index.html")
+    
+    ProjectService.deleteProject(id)
+
+    return redirect("/")
 
 
 @require_auth

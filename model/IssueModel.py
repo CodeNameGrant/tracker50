@@ -72,3 +72,9 @@ def create(issue):
         "INSERT INTO issues(title, description, assignee_id, project_id) VALUES (?, ?, ?, ?)",
         issue["title"], issue["description"], issue["assigneeId"], issue["projectId"]
     )
+
+def deleteIssuesByProjectId(id):
+    db.execute(
+        "DELETE FROM issues WHERE project_id = ?",
+        id
+    )

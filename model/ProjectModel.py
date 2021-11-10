@@ -82,11 +82,14 @@ def create(project):
     )
 
 
-def addContributor(projectId, userId):
+def linkUserToProject(projectId, userId):
     return db.execute(
         "INSERT INTO users_projects(project_id, user_id) VALUES (?, ?)",
         projectId, userId
     )
+
+def deleteProject(id):
+    db.execute("DELETE FROM projects where id = ?", id)
 
 
 def updateDescriptionByProjectId(id, description):
@@ -95,8 +98,11 @@ def updateDescriptionByProjectId(id, description):
             description,id
         )
 
-def removeUserProjectLink(projectId, userId):
+def linkUserToProject(projectId, userId):
     db.execute("DELETE FROM users_projects WHERE project_id = ? AND user_id = ?", projectId, userId)
+
+def unlinkProjectUsers(projectId):
+    db.execute("DELETE FROM users_projects WHERE project_id = ?", projectId)
 
 
 def reassignIssues(projectId, currentUserId, futureUserId):

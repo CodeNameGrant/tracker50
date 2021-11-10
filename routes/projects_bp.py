@@ -4,12 +4,10 @@ from controllers.ProjectController import addContributor, getContributors, remov
 # Initialise blueprint
 projects = Blueprint("projects", __name__)
 
-# TODO
-projects.route("/<int:id>", methods=["DELETE"])(destroy)
-
 # Renders or Redirects to a Page
 projects.route("/<int:id>", methods=["GET"])(view)
 projects.route("/<int:id>", methods=["POST"])(update)
+projects.route("/<int:id>/delete", methods=["GET"])(destroy)
 
 # Returns JSON response
 projects.route("", methods=["POST"])(create)

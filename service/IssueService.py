@@ -21,3 +21,6 @@ def getOpenIssuesByUserId(userId):
 def create(issue):
     IssueModel.create(issue)
 
+
+def removeIssuesByProjectId(id):
+    IssueModel.deleteIssuesByProjectId(id)

@@ -30,7 +30,7 @@ CREATE TABLE issues (
   id INTEGER,
   title VARCHAR(50) NOT NULL,
   description TEXT,
-  is_open CAHR(1) NOT NULL DEFAULT 0,
+  is_open CAHR(1) NOT NULL DEFAULT 1,
   assignee_id INTEGER NOT NULL,
   project_id INTEGER NOT NULL,
   PRIMARY KEY(id),
@@ -40,20 +40,3 @@ CREATE TABLE issues (
 
 CREATE INDEX idx_issues__assignee_id ON issues (assignee_id);
 CREATE INDEX idx_issues__project_id ON issues (project_id);
-
-CREATE TABLE tags (
-  id INTEGER,
-  title VARCHAR(20) NOT NULL,
-  project_id INTEGER NOT NULL,
-  PRIMARY KEY (id),
-  CONSTRAINT FK_tags__project_id FOREIGN KEY (project_id) REFERENCES projects (id),
-  CONSTRAINT UNQ_tags UNIQUE (project_id, title)
-);
-
-CREATE TABLE issues_tags (
-  project_id INTEGER,
-  issue_id INTEGER,
-  CONSTRAINT PK_issues_tags PRIMARY KEY (project_id, issue_id),
-  CONSTRAINT FK_issues_tags__issue_id FOREIGN KEY (issue_id) REFERENCES issues (id),
-  CONSTRAINT FK_issues_tags__project_id FOREIGN KEY (project_id) REFERENCES projects (id)
-)

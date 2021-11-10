@@ -1,5 +1,15 @@
+from service import IssueService
 from model import ProjectModel, IssueModel
 
+def deleteProject(id):
+    # Delete all issues
+    IssueService.removeIssuesByProjectId(id)
+
+    # remove all contributor links
+    ProjectModel.unlinkProjectUsers(id)
+
+    # remove project
+    ProjectModel.deleteProject(id)
 
 def getProjectKeyNames():
     projects = ProjectModel.findAll()
@@ -41,7 +51,7 @@ def getProjectAdmin(projectId):
 
 
 def addProjectContributor(projectId, userId):
-    ProjectModel.addContributor(projectId, userId)
+    ProjectModel.linkUserToProject(projectId, userId)
 
 
 def getProjectContributors(projectId):
@@ -67,7 +77,7 @@ def removeContributor(projectId, userId):
     ProjectModel.reassignIssues(projectId, userId, projectAdmin["id"])
 
     # remove project_user entry
-    ProjectModel.removeUserProjectLink(projectId, userId);
+    ProjectModel.linkUserToProject(projectId, userId);
 
 def updateDescription(projectId, description):
     ProjectModel.updateDescriptionByProjectId(projectId, description);
