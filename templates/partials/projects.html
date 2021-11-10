@@ -17,7 +17,10 @@
         <td scope="row">{{ project.name }}</td>
         <td scope="row">{{ project.description }}</td>
         <td scope="row">{{ "Open" if project.is_open|int == 1 else "Closed" }}</td>
-        <td scope="row">{{ project.issues_open }} / {{ project.issues_total }}</td>
+        <td scope="row">
+          <a href="/issues?project={{ project['key'] }}&isOpen=1">{{ project.issues_open }}</a>&nbsp;/
+          <a href="/issues?project={{ project['key'] }}">{{ project.issues_total }}</a>
+        </td>
         <td scope="row">{{ project.contributors|join(", ") }}</td>
         <td scope="row">{{ project.admin.userDisplayName }}</td>
       </tr>

@@ -32,9 +32,6 @@ Required
 - project view, edit description
 - dashboard project
   -- contributors must be a counter with a link to view them (maybe modal)
-  -- issue counts must link to views
-- issues
-  -- add filter selection options
 
 Optional
 
