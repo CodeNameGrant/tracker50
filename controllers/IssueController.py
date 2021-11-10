@@ -2,7 +2,7 @@ from itertools import filterfalse
 from flask import render_template, request, Response
 from service.AuthService import require_auth
 
-from service import IssueService, ProjectService
+from service import IssueService, ProjectService, UserService
 
 
 @require_auth
@@ -31,7 +31,8 @@ def find():
 
     return render_template("issues/find.html", 
                             issues=issues, 
-                            projects=ProjectService.getProjectKeyNames())
+                            projects=ProjectService.getProjectKeyNames(),
+                            users=UserService.getSortedUsers())
 
 
 @require_auth

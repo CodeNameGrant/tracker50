@@ -7,21 +7,40 @@
 {% block main %}
   <h3>Find Issues</h3>
 
-  <form action="/issues" class="d-flex justify-content-end align-items-center my-3 " >       
-    <div class="form-floating me-2">
-      <input class="form-control me-2" placeholder="Project" name="project" list="projects" value="{{ request.args.get('project') if request.args.get('project') is not none }}"/>
+  <form action="/issues" class="d-flex align-items-end my-3 " >       
+    <div class="me-2">
+      <label for="keyInput">Project</label>
+      <input class="form-control me-2" name="project" list="projects" value="{{ request.args.get('project') if request.args.get('project') is not none }}"/>
       <datalist id="projects">
         {% for p in projects %}
           <option value="{{p['key']}}">{{ p["name"] }}</option>
         {% endfor %}
       </datalist>
+    </div>
 
-      <label for="keyInput">Project</label>
+    <div class="me-2">
+      <label for="keyInput">Assignee</label>
+      <input class="form-control me-2" name="assignee" list="assignees" value="{{ request.args.get('assignee') if request.args.get('assignee') is not none }}"/>
+      <datalist id="assignees">
+        {% for u in users %}
+          <option value="{{u['username']}}" />
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <div class="me-2">
+      <label for="keyInput">Status</label>
+      <!-- <input class="form-control me-2" name="isOpen" value="{{ request.args.get('project') if request.args.get('project') is not none }}"/> -->
+      <select class="form-select" name="isOpen" id="statusSelect">
+        <option value="">Select</option>
+        <option value="0">Closed</option>
+        <option value="1">Open</option>
+      </select>
     </div>
     
-    <div class="form-floating me-2">
-      <input class="form-control" placeholder="Search" name="q" value="{{ request.args.get('q') if request.args.get('q') is not none }}"/>
+    <div class="me-2">
       <label for="keyInput">Search</label>
+      <input class="form-control" name="q" value="{{ request.args.get('q') if request.args.get('q') is not none }}"/>
     </div>
 
     <button type="submit" class="btn btn-light">
@@ -29,7 +48,15 @@
         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
       </svg>
     </button>
+
+    <button type="reset" class="btn btn-light ms-2">
+      X
+    </button>
   </form>
+
+  <script>
+    document.querySelector("form #statusSelect").value = "{{request.args.get('isOpen')}}";
+  </script>
 
   
 
