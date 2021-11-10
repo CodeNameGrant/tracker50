@@ -25,9 +25,7 @@
     Admin: {{ project.admin.userDisplayName }}
   </p>
 
-  <p class="lead">
-    {{ project.description }}
-  </p>
+  {% include "/projects/description.html" %}
 
   <div class="d-flex">
     <h3>Issues</h3>

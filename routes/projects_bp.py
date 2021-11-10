@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers.ProjectController import addContributor, getContributors, removeContributor, view, create, destroy, getProjects
+from controllers.ProjectController import addContributor, getContributors, removeContributor, view, update, create, destroy, getProjects
 
 # Initialise blueprint
 projects = Blueprint("projects", __name__)
@@ -9,6 +9,7 @@ projects.route("/<int:id>", methods=["DELETE"])(destroy)
 
 # Renders or Redirects to a Page
 projects.route("/<int:id>", methods=["GET"])(view)
+projects.route("/<int:id>", methods=["POST"])(update)
 
 # Returns JSON response
 projects.route("", methods=["POST"])(create)

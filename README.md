@@ -27,14 +27,13 @@ https://www.digitalocean.com/community/tutorials/how-to-use-python-markdown-to-c
 TODO
 
 Required
-
-- Remove contributors, reassign issues to admin
-- project view, edit description
-- dashboard project
-  -- contributors must be a counter with a link to view them (maybe modal)
+-delete project
 
 Optional
 
 - add tags
 - add comments to issues
+- Reassign all open issues to specificied user
 - investigate default route for blueprints
+- dashboard projects
+  -- contributors must be a counter with a link to view them (maybe modal)

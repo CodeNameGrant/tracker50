@@ -1,0 +1,30 @@
+<p id="descriptionDisplay" class="lead">
+  {{ project.description }}<br />
+  {% if project.userIsAdmin %}
+  <button id="editBtn" class="btn btn-sm btn-light">Edit</button>
+  {% endif %}
+</p>
+
+<form method="post" action="/projects/{{ project.id }}" id="descriptionForm" class="d-none mb-3">
+  <textarea class="p-2" style="width: 25em; height: 5em;" name='description' placeholder="Project Description">{{ project.description }}</textarea><br />
+  <button class="btn btn-sm btn-primary" type="submit">Save</button>
+  <button id="cancelBtn" class="btn btn-sm btn-light cancelBtn">Cancel</button>
+</form>
+
+<script>
+  let origDescription = "{{ project.description }}";
+
+  document.getElementById("editBtn")
+    .addEventListener("click", () => {
+      document.getElementById("descriptionDisplay").classList.toggle("d-none");
+      document.getElementById("descriptionForm").classList.toggle("d-none");
+    });
+
+  document.getElementById("cancelBtn")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+
+      document.getElementById("descriptionDisplay").classList.toggle("d-none");
+      document.getElementById("descriptionForm").classList.toggle("d-none");
+    });
+</script>

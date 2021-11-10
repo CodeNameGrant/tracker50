@@ -68,3 +68,6 @@ def removeContributor(projectId, userId):
 
     # remove project_user entry
     ProjectModel.removeUserProjectLink(projectId, userId);
+
+def updateDescription(projectId, description):
+    ProjectModel.updateDescriptionByProjectId(projectId, description);

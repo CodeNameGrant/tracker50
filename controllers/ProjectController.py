@@ -1,7 +1,7 @@
 import json
 
 from itertools import filterfalse
-from flask import render_template, request, session, Response
+from flask import render_template, request, session, Response, redirect
 
 from service import ProjectService, IssueService, UserService
 from service.AuthService import require_auth
@@ -62,6 +62,16 @@ def create():
 
     return Response(status=201)
 
+@require_auth
+def update(id):
+
+    description = request.form.get('description')
+    if description is None:
+        return redirect("/projects/" + str(id) + "?error=Description+Required")
+
+    ProjectService.updateDescription(id, description);
+
+    return redirect("/projects/" + str(id))
 
 @require_auth
 def destroy(id):

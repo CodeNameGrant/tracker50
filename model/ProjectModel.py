@@ -89,20 +89,11 @@ def addContributor(projectId, userId):
     )
 
 
-def updateProject(project):
+def updateDescriptionByProjectId(id, description):
     db.execute(
-        "UPDATE projects SET" +
-        " key = ?," +
-        " name = ?," +
-        " description = ?," +
-        " is_open = ?," +
-        " owner_id = ?" +
-        " WHERE id = ?",
-        project["key"], project["name"], project["description"], 1, project["ownerId"], project["id"]
-    )
-
-    db.execute("UPDATE users_projects SET user_id = ?", project["ownerId"])
-
+            "UPDATE projects SET description = ? WHERE id = ?", 
+            description,id
+        )
 
 def removeUserProjectLink(projectId, userId):
     db.execute("DELETE FROM users_projects WHERE project_id = ? AND user_id = ?", projectId, userId)
