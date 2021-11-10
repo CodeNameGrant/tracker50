@@ -91,3 +91,18 @@ def addContributor(id):
 
     except:
         return Response(response=json.dumps({"message": "User is already a contributor of this project"}), status=400)
+
+@require_auth
+def removeContributor(id):
+    userId = session["user_id"]
+
+    contributorId = request.json.get("contributorId")
+    if contributorId is None:
+        return Response(response=json.dumps({"message": "contributorId required"}), status=400)
+
+    if userId == contributorId:
+        return Response(response=json.dumps({"message": "Cannot remove admin as a contributor"}), status=400)
+    
+    ProjectService.removeContributor(id, contributorId)
+
+    return Response(status=201)

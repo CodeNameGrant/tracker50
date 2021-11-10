@@ -102,3 +102,16 @@ def updateProject(project):
     )
 
     db.execute("UPDATE users_projects SET user_id = ?", project["ownerId"])
+
+
+def removeUserProjectLink(projectId, userId):
+    db.execute("DELETE FROM users_projects WHERE project_id = ? AND user_id = ?", projectId, userId)
+
+
+def reassignIssues(projectId, currentUserId, futureUserId):
+    db.execute(
+        "UPDATE issues SET" +
+        " assignee_id = ?" +
+        " WHERE project_id = ? AND assignee_id = ? AND is_open = 1",
+        futureUserId, projectId, currentUserId
+    )

@@ -16,7 +16,7 @@
           {% if project.admin.id == user.id %}
             Cannot Remove Admin
           {% else %}
-            <button class="btn btn-sm btn-outline-danger remove-contributor" value="{{ project.id }}" disabled>Remove</button>
+            <button class="btn btn-sm btn-outline-danger remove-contributor" value="{{ user.id }}" disabled>Remove</button>
           {% endif %}
         </td>
       </tr>
@@ -24,13 +24,31 @@
   </tbody>
 </table>
 
-{% if project["userIsAdmin"] %}
+{% if project.userIsAdmin %}
   <script>
     // Enable Remove for contributors
     document.querySelectorAll("#contributorTable button.remove-contributor")
       .forEach(e => {
         e.removeAttribute("disabled");
-      });
 
+        e.addEventListener("click", (e) => {
+          const projectId = parseInt("{{ project.id }}");
+          const contributorId = parseInt(e.target.value);
+
+          fetch(`/projects/${projectId}/contributors`, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ contributorId }),
+          })
+          .then(handleFetchResponse)
+          .then(() => window.location.reload())
+          .catch(error => {
+            alert(`Error: ${error}`)
+          })
+        });
+      });
   </script>
 {% endif %}

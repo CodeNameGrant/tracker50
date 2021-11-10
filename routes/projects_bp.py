@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers.ProjectController import addContributor, getContributors, view, create, destroy, getProjects
+from controllers.ProjectController import addContributor, getContributors, removeContributor, view, create, destroy, getProjects
 
 # Initialise blueprint
 projects = Blueprint("projects", __name__)
@@ -16,3 +16,4 @@ projects.route("", methods=["GET"])(getProjects)
 
 projects.route("/<int:id>/contributors", methods=["GET"])(getContributors)
 projects.route("/<int:id>/contributors", methods=["POST"])(addContributor)
+projects.route("/<int:id>/contributors", methods=["DELETE"])(removeContributor)

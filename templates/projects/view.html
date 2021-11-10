@@ -7,13 +7,13 @@
 {% block main %}
   <script>
     const handleFetchResponse = async (response) => {
-    if (!response.ok) {
-        const error = await response.json();
-        throw Error(error.message)
-      }
+      if (!response.ok) {
+          const error = await response.json();
+          throw Error(error.message)
+        }
 
-      return response.json();
-  }
+        return Promise.resolve();
+    }
   </script>
 
   <div class="d-flex align-items-center my-3">

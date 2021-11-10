@@ -38,30 +38,7 @@
     saveContributor(projectId, selectUser.value);
   });
 
-  const removeSelectedContributor = () => {
-    const selectUser = contributorForm.querySelector("select");
-
-    selectUser.remove(selectUser.selectedIndex);
-  }
-
-  const addContributorToGrid = ({ id, username, userDisplayName }) => {
-    console.log("addContributorToGrid");
-    const table = document.querySelector("#contributorTable>tbody");
-    console.log(table);
-    const row = table.insertRow(0);
-
-    const usernameTD = row.insertCell(0);
-    usernameTD.innerHTML = userDisplayName;
-
-    const issuesLinkTD = row.insertCell(1);
-    issuesLinkTD.innerHTML = `<a href="/issues?q=${username}">View Issues</a>`;
-
-    const removeBtnTD = row.insertCell(2);
-    removeBtnTD.innerHTML = `<button class="btn btn-sm btn-outline-danger" value="${id}">Remove</button>`;
-  }
-
   const saveContributor = (projectId, contributorId) => {
-
     fetch(`/projects/${projectId}/contributors`, {
       method: 'POST',
       headers: {
@@ -71,11 +48,8 @@
       body: JSON.stringify({ contributorId }),
     })
     .then(handleFetchResponse)
-    .then(json => {
-      console.log("Test");
-      addContributorToGrid(json[0]);
-      removeSelectedContributor();
-
+    .then(() => {
+      window.location.reload();
     })
     .catch(error => {
       alert(`Error: ${error}`)

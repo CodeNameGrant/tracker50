@@ -59,3 +59,12 @@ def getOpenProjects():
 
 def create(project):
     ProjectModel.create(project)
+    
+
+def removeContributor(projectId, userId): 
+    # Reassign all open issues for project to admin
+    projectAdmin = getProjectAdmin(projectId)
+    ProjectModel.reassignIssues(projectId, userId, projectAdmin["id"])
+
+    # remove project_user entry
+    ProjectModel.removeUserProjectLink(projectId, userId);
