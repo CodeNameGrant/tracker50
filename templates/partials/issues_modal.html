@@ -60,18 +60,17 @@
       const projectSelect = document.querySelector("#projectSelect");
 
       fetch("/projects?isOpen=true", { headers: { 'Content-Type': 'application/json', }})
-      .then(res => res.json())
-      .then(projects => {
-        
-        for (const project of projects) {
-          var option = document.createElement("option");
-          option.value = project.id
-          option.text = `${project.key} - ${project.name}`;
-          projectSelect.add(option);
-        }
+        .then(res => res.json())
+        .then(projects => {
+          for (const project of projects) {
+            var option = document.createElement("option");
+            option.value = project.id
+            option.text = `${project.key} - ${project.name}`;
+            projectSelect.add(option);
+          }
 
-        projectsLoaded = true;
-      });
+          projectsLoaded = true;
+        });
     });
 
   document.querySelector("#projectSelect")
