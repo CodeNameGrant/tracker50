@@ -25,7 +25,7 @@ def view(id):
 
     project = ProjectService.getProjectById(id)
     projectAdmin = ProjectService.getProjectAdmin(id)
-    project["adminDisplayName"] = projectAdmin["userDisplayName"]
+    project["admin"] = projectAdmin
     project["userIsAdmin"] = projectAdmin["id"] == userId
 
     contributors = ProjectService.getProjectContributors(id)
@@ -77,15 +77,17 @@ def getContributors(id):
 
 @require_auth
 def addContributor(id):
-    userId = int(request.json["userId"])
+    userId = session["user_id"]
+
+    contributorId = int(request.json["contributorId"])
 
     projectAdmin = ProjectService.getProjectAdmin(id)
     if projectAdmin["id"] != userId:
         return Response(response=json.dumps({"message": "Only project admin can add contributors"}), status=400)
 
     try:
-        ProjectService.addProjectContributor(id, userId)
-        return Response(response=json.dumps([UserService.getUserById(userId)]), status=200)
+        ProjectService.addProjectContributor(id, contributorId)
+        return Response(response=json.dumps([UserService.getUserById(contributorId)]), status=200)
 
     except:
         return Response(response=json.dumps({"message": "User is already a contributor of this project"}), status=400)

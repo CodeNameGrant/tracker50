@@ -1,0 +1,36 @@
+<table id="contributorTable" class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Issues</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+
+  <tbody>    
+    {% for user in contributors %}
+      <tr class="align-middle" data-id="{{ user.id }}">
+        <td>{{ user.userDisplayName }}</td>
+        <td><a href="/issues?assignee={{ user.username }}">View Issues</a></td>
+        <td>
+          {% if project.admin.id == user.id %}
+            Cannot Remove Admin
+          {% else %}
+            <button class="btn btn-sm btn-outline-danger remove-contributor" value="{{ project.id }}" disabled>Remove</button>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor%}
+  </tbody>
+</table>
+
+{% if project["userIsAdmin"] %}
+  <script>
+    // Enable Remove for contributors
+    document.querySelectorAll("#contributorTable button.remove-contributor")
+      .forEach(e => {
+        e.removeAttribute("disabled");
+      });
+
+  </script>
+{% endif %}

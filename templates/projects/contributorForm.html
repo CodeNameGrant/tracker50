@@ -1,0 +1,85 @@
+<form id="contributorForm" class="d-flex mb-3 needs-validation">
+  <select class="col-md-2" class="form-select" name="userId">
+    <option value="">Select user...</option>
+    {% for user in users %}
+      <option value="{{ user.id }}">{{ user.userDisplayName }}</option>
+    {% endfor %}
+  </select>
+
+  <button 
+    type="submit"
+    class="btn btn-primary"
+    style="margin-left: 0.5em;"
+    disabled>Add Contributor</button>
+</form>
+
+<script> 
+  const contributorForm = document.querySelector('#contributorForm');
+  const contributorTable = document.querySelector('#contributorTable');
+  
+  // Enable Submit button on change of contributor selection
+  contributorForm.querySelector("select")
+    .addEventListener("change", (e) => {
+      const submitBtn = contributorForm.querySelector("button[type='submit']")
+      
+      if (e.target.value) {
+        submitBtn.removeAttribute("disabled")
+      } else {
+        submitBtn.setAttribute("disabled", "true")
+      }
+    });
+  
+  contributorForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const projectId = parseInt("{{ project['id'] }}");
+    const selectUser = e.target[0];
+
+    saveContributor(projectId, selectUser.value);
+  });
+
+  const removeSelectedContributor = () => {
+    const selectUser = contributorForm.querySelector("select");
+
+    selectUser.remove(selectUser.selectedIndex);
+  }
+
+  const addContributorToGrid = ({ id, username, userDisplayName }) => {
+    console.log("addContributorToGrid");
+    const table = document.querySelector("#contributorTable>tbody");
+    console.log(table);
+    const row = table.insertRow(0);
+
+    const usernameTD = row.insertCell(0);
+    usernameTD.innerHTML = userDisplayName;
+
+    const issuesLinkTD = row.insertCell(1);
+    issuesLinkTD.innerHTML = `<a href="/issues?q=${username}">View Issues</a>`;
+
+    const removeBtnTD = row.insertCell(2);
+    removeBtnTD.innerHTML = `<button class="btn btn-sm btn-outline-danger" value="${id}">Remove</button>`;
+  }
+
+  const saveContributor = (projectId, contributorId) => {
+
+    fetch(`/projects/${projectId}/contributors`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ contributorId }),
+    })
+    .then(handleFetchResponse)
+    .then(json => {
+      console.log("Test");
+      addContributorToGrid(json[0]);
+      removeSelectedContributor();
+
+    })
+    .catch(error => {
+      alert(`Error: ${error}`)
+    })
+  }
+
+</script>

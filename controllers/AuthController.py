@@ -61,6 +61,7 @@ def login():
     # Log user in
     session.clear()
     session["user_id"] = user["id"]
+    session["username"] = user["username"]
 
     # redirect to dashboard
     return redirect("/dashboard")
